@@ -1,0 +1,252 @@
+/* ==============================
+   ISMA ADMIN THEME
+================================ */
+
+:root {
+    --isma-primary: #173b63;
+    --isma-primary-hover: #214e80;
+}
+
+/* Sidebar */
+.navbar-vertical {
+    background: var(--isma-primary);
+}
+
+.navbar-vertical .navbar-brand {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+.navbar-vertical .nav-link {
+    border-radius: 6px;
+    margin: 2px 8px;
+}
+
+.navbar-vertical .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+}
+
+/* Header */
+.page-wrapper > .navbar {
+    background: var(--tblr-bg-surface);
+    border-bottom: 1px solid var(--tblr-border-color);
+    min-height: 65px;
+}
+
+/* Cards */
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--tblr-border-color);
+}
+
+.section-item {
+    border: 1px solid var(--tblr-border-color);
+    padding: 1rem;
+}
+
+.drag-handle {
+    cursor: grab;
+    color: var(--tblr-secondary);
+    user-select: none;
+    touch-action: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.sortable-ghost {
+    background: var(--tblr-primary-bg-subtle);
+    opacity: 0.5;
+}
+
+.section-content {
+    min-width: 0;
+}
+
+.section-content .text-secondary {
+    overflow-wrap: anywhere;
+}
+
+/* =====================================
+   MASTER QUESTIONS
+===================================== */
+
+.question-item {
+    border: 1px solid var(--tblr-border-color);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: .75rem;
+    background: #fff;
+}
+
+.question-row {
+    align-items: flex-start !important;
+}
+
+.question-left {
+    flex-shrink: 0;
+    min-width: 70px;
+}
+
+.question-number {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 36px;
+    text-align: center;
+    padding: .45rem .7rem;
+}
+
+.question-drag-handle {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    color: var(--tblr-secondary);
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.question-drag-handle:active {
+    cursor: grabbing;
+}
+
+.question-content {
+    min-width: 0;
+    text-align: left;
+}
+
+.question-text {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--tblr-body-color);
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.question-description {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.question-actions {
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+.sortable-ghost {
+    background: var(--tblr-primary-bg-subtle);
+    opacity: 0.5;
+}
+
+@media (max-width: 767px) {
+    .question-row {
+        flex-wrap: wrap;
+    }
+
+    .question-left {
+        min-width: auto;
+    }
+
+    .question-actions {
+        width: 100%;
+        margin-top: .75rem;
+    }
+}
+/* Responsive */
+@media (max-width: 991.98px) {
+    .navbar-vertical .navbar-brand {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* ======================================
+   RESPONDENT MANAGEMENT
+====================================== */
+
+#tableRespondents td {
+    vertical-align: middle;
+}
+
+#modalRespondentDetail .modal-body {
+    background: var(--tblr-bg-surface-secondary);
+}
+
+#modalRespondentDetail .card {
+    border-radius: 10px;
+}
+
+.respondent-suggestion {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.7;
+}
+
+#respondentAnswers td {
+    line-height: 1.6;
+}
+
+#respondentAnswers .badge {
+    min-width: 35px;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    #modalRespondentDetail .modal-dialog {
+        margin: 8px;
+    }
+}
+
+/* =====================================
+   SELECT2 FILTER RESPONDEN
+===================================== */
+
+#respondentModule .select2-container {
+    width: 100% !important;
+}
+
+#respondentModule
+.select2-container--default
+.select2-selection--single {
+    height: 38px;
+    border: 1px solid var(--tblr-border-color);
+    border-radius: var(--tblr-border-radius);
+    background-color: var(--tblr-bg-forms);
+}
+
+#respondentModule
+.select2-container--default
+.select2-selection--single
+.select2-selection__rendered {
+    line-height: 36px;
+    padding-left: 12px;
+    padding-right: 30px;
+    color: var(--tblr-body-color);
+}
+
+#respondentModule
+.select2-container--default
+.select2-selection--single
+.select2-selection__arrow {
+    height: 36px;
+    right: 7px;
+}
+
+#respondentModule
+.select2-container--default
+.select2-selection--single
+.select2-selection__clear {
+    margin-right: 16px;
+}
+
+.select2-container--default
+.select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #1767a9;
+}
