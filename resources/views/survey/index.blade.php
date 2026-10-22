@@ -1,4 +1,19 @@
 @extends('layouts.survey')
+@section('title', 'Survei Perwira Pandu | PT Intan Sejahtera Utama')
+
+@section('meta_description',
+    'Sampaikan prioritas dan masukan Anda untuk peningkatan kesejahteraan, keselamatan, dan lingkungan kerja Perwira Pandu.'
+)
+
+@section('og_title',
+    'Survei Perwira Pandu | PT Intan Sejahtera Utama'
+)
+
+@section('og_description',
+    'Suara Anda, Prioritas Kami. Berpartisipasilah dalam Survei Perwira Pandu untuk mendukung evaluasi dan pengembangan lingkungan kerja.'
+)
+
+@section('og_url', route('survey.public.index'))
 
 @section('title', 'Survei Perwira Pandu')
 
