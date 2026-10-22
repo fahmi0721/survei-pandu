@@ -113,7 +113,7 @@ class PublicSurveyController extends Controller
             'items' => $section->questions->map(fn ($question) => [
                 'id' => $question->id,
                 'text' => $question->question_text,
-                'description' => $question->description ?? '',
+                // 'description' => $question->description ?? '',
             ])->values()->all(),
         ])->values();
         $workAreas = WorkArea::query()
