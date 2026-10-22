@@ -21,7 +21,7 @@
 
         </a>
         <h2>Petunjuk Pengisian</h2>
-        <p>Survei terdiri dari <b>{{ $sectionData->count() }} bagian</b>, masing-masing berisi <b>10 aspek</b>. Susun semua aspek berdasarkan prioritas Anda.</p>
+        <p class="note-success">Survei terdiri dari <b>{{ $sectionData->count() }} bagian</b>, masing-masing berisi <b>10 aspek</b>. Susun semua aspek berdasarkan prioritas Anda.</p>
         <div class="note">
             <b>Ranking 1</b> = paling penting; <b>ranking 10</b> = paling tidak penting dibandingkan aspek lain dalam bagian yang sama.
             Gunakan tombol <b>↑ dan ↓</b> untuk mengubah urutan, atau geser melalui nomor ranking.
