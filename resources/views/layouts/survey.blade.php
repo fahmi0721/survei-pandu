@@ -26,10 +26,10 @@
         content="@yield('og_url', url()->current())">
 
     <meta property="og:image"
-        content="{{ asset('images/survey-preview.jpg') }}">
+        content="{{ asset('images/survey.png') }}">
 
     <meta property="og:image:secure_url"
-        content="{{ secure_asset('images/survey-preview.jpg') }}">
+        content="{{ secure_asset('images/survey.png') }}">
 
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
