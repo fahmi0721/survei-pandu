@@ -15,10 +15,7 @@
         <h1>Survei Perwira Pandu</h1>
 
         <p>
-            Suara dan masukan Anda menjadi bagian penting
-            dalam pemetaan kebutuhan, kesejahteraan,
-            keselamatan, dan pengembangan profesi
-            Perwira Pandu.
+            Saran dan masukan Anda menjadi bagian penting bagi kami untuk peningkatan kualitas pelayanan bagi Perusahaan.
         </p>
 
     </section>
