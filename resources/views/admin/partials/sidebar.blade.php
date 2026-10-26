@@ -38,25 +38,19 @@
              id="sidebar-menu">
 
             <ul class="navbar-nav pt-lg-3">
-
+                @can('access-dashboard')
                 <li class="nav-item">
-
-                    <a class="nav-link
-                        {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                       href="{{ route('admin.dashboard') }}">
-
-                        <span class="nav-link-icon">
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-
-                        <span class="nav-link-title">
-                            Dashboard
-                        </span>
-
+                    <a href="{{ route('admin.dashboard') }}"
+                    class="nav-link
+                        {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}
+                    ">
+                        <i class="ti ti-layout-dashboard me-2"></i>
+                        Dashboard
                     </a>
-
                 </li>
-
+                @endcan
+                
+                @can('manage-surveys')
                 <li class="nav-item mt-3">
                     <span class="nav-link text-uppercase small opacity-75">
                         Master Data
@@ -80,6 +74,7 @@
                     </a>
 
                 </li>
+                @can('manage-work-areas')
                 <li class="nav-item">
                     <a href="{{ route('admin.work-areas.index') }}"
                     class="nav-link {{ request()->routeIs('admin.work-areas.*') ? 'active' : '' }}">
@@ -93,12 +88,14 @@
                         </span>
                     </a>
                 </li>
+                @endcan
+                @endcan
                 <li class="nav-item mt-3">
                     <span class="nav-link text-uppercase small opacity-75">
                         Operasional
                     </span>
                 </li>
-
+                @can('view-respondents')
                 <li class="nav-item">
                     <a href="{{ route('admin.respondents.index') }}"
                     class="nav-link
@@ -111,11 +108,10 @@
                         <span class="nav-link-title">
                             Kelola Responden
                         </span>
-
                     </a>
-
                 </li>
-
+                @endcan
+                @can('view-survey-results')
                 <li class="nav-item">
                     <a href="{{ route('admin.survey-results.index') }}"
                     class="nav-link
@@ -130,26 +126,10 @@
                         </span>
                     </a>
                 </li>
+                @endcan
 
-                @foreach ([
-                    ['icon' => 'ti-file-spreadsheet', 'label' => 'Laporan'],
-                ] as $menu)
 
-                    <li class="nav-item">
-                        <span class="nav-link opacity-75">
-                            <span class="nav-link-icon">
-                                <i class="ti {{ $menu['icon'] }}"></i>
-                            </span>
-                            <span class="nav-link-title">
-                                {{ $menu['label'] }}
-                            </span>
-                        </span>
-                    </li>
-
-                @endforeach
-
-                @if(auth()->user()->role === 'admin')
-
+                @can('manage-users')
                     <li class="nav-item mt-3">
                         <span class="nav-link text-uppercase small opacity-75">
                             Pengaturan
@@ -157,17 +137,20 @@
                     </li>
 
                     <li class="nav-item">
-                        <span class="nav-link opacity-75">
+                        <a class="nav-link
+                            {{ request()->routeIs('admin.users.index.*') ? 'active' : '' }}
+                        "
+                            href="{{ route('admin.users.index') }}"
+                        >
                             <span class="nav-link-icon">
                                 <i class="ti ti-users-group"></i>
                             </span>
                             <span class="nav-link-title">
                                 Manajemen User
                             </span>
-                        </span>
+                        </a>
                     </li>
-
-                @endif
+                @endcan
 
             </ul>
 

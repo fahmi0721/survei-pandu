@@ -8,6 +8,7 @@ import { initSurveyQuestions } from './questions';
 import { initWorkAreas } from './work-areas';
 import { initRespondents } from './respondents';
 import { initSurveyResults } from './survey-results';
+import { initUsers } from './users';
 
 export function initAdmin() {
 
@@ -25,6 +26,7 @@ export function initAdmin() {
     initWorkAreas();
     initRespondents();
     initSurveyResults();
+    initUsers();
 }
 
 function initTheme() {
