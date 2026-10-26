@@ -31,7 +31,7 @@
         <div class="fieldgrid">
             <div class="field"><label for="status">Status Kerja</label><select id="status"><option value="">-- Pilih Status Kerja --</option><option value="aktif">Aktif</option><option value="tidak_aktif">Tidak Aktif</option></select></div>
             
-            <div class="field"><label for="kelas">Kelas pandu (opsional)</label><select id="kelas"><option value="">-- Tidak diisi --</option><option value="Pandu Tingkat I">Pandu Tingkat I</option><option value="Pandu Tingkat I">Pandu Tingkat II</option></select></div>
+            <div class="field"><label for="kelas">Kelas pandu (opsional)</label><select id="kelas"><option value="">-- Tidak diisi --</option><option value="Pandu Tingkat I">Pandu Tingkat I</option><option value="Pandu Tingkat II">Pandu Tingkat II</option></select></div>
             <div class="field">
                 <label for="wilayah">Wilayah / lokasi penugasan (opsional)</label>
                 <select id="wilayah" name="work_area_id">
