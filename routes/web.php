@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SurveyQuestionController;
 use App\Http\Controllers\Survey\PublicSurveyController;
 use App\Http\Controllers\Admin\WorkAreaController;
 use App\Http\Controllers\Admin\SurveyRespondentController;
+use App\Http\Controllers\Admin\SurveyResultController;
 
 Route::get('/', [
     PublicSurveyController::class,
@@ -156,6 +157,21 @@ Route::prefix('admin')
                 SurveyRespondentController::class,
                 'show'
             ])->name('show');
+        });
+
+        Route::prefix('survey-results')
+        ->name('survey-results.')
+        ->group(function () {
+
+            Route::get('/', [
+                SurveyResultController::class,
+                'index',
+            ])->name('index');
+
+            Route::get('/data', [
+                SurveyResultController::class,
+                'data',
+            ])->name('data');
         });
 
 });

@@ -116,8 +116,22 @@
 
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('admin.survey-results.index') }}"
+                    class="nav-link
+                    {{ request()->routeIs('admin.survey-results.*') ? 'active' : '' }}">
+
+                        <span class="nav-link-icon">
+                            <i class="ti ti-chart-bar"></i>
+                        </span>
+
+                        <span class="nav-link-title">
+                            Hasil Survei
+                        </span>
+                    </a>
+                </li>
+
                 @foreach ([
-                    ['icon' => 'ti-chart-bar', 'label' => 'Hasil Survei'],
                     ['icon' => 'ti-file-spreadsheet', 'label' => 'Laporan'],
                 ] as $menu)
 
