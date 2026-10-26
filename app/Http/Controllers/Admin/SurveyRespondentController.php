@@ -64,7 +64,7 @@ class SurveyRespondentController extends Controller
             ->when(
                 $filters['status'] ?? null,
                 fn ($query, $status) =>
-                    $query->where('status_kerja', $status)
+                    $query->where('status', $status)
             )
 
             ->when(
