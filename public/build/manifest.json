@@ -23,7 +23,7 @@
     "src": "node_modules/@tabler/icons-webfont/dist/fonts/tabler-icons.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-am9SgBr-.css",
+    "file": "assets/app-QCDeK3s5.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -33,7 +33,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-D80KaDzt.js",
+    "file": "assets/app-QCkwRn7W.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
