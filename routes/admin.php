@@ -43,6 +43,8 @@ Route::middleware('can:view-survey-results')
 
         Route::get('/data', [SurveyResultController::class, 'data'])
             ->name('data');
+
+        Route::get('/survey-results/print',[SurveyResultController::class, 'print'])->name('print');
     });
 
 // KHUSUS ADMIN — pertahankan seluruh route master

@@ -6,20 +6,46 @@
 @section('content')
 
 <div id="surveyResultModule"
-     data-url="{{ route('admin.survey-results.data') }}">
+     data-url="{{ route('admin.survey-results.data') }}"
+    data-print-url="{{ route('admin.survey-results.print') }}">
+    
+<div class="page-header mb-4">
+    <div class="row align-items-center">
 
-    <div class="page-header mb-4">
-        <div class="row align-items-center">
-            <div class="col">
-                <div class="page-pretitle">Analisis</div>
-                <h2 class="page-title">Hasil Survei</h2>
-                <div class="text-secondary mt-1">
-                    Analisis berdasarkan jawaban ranking 1
-                    pada setiap bagian survei.
-                </div>
+        <div class="col">
+            <div class="page-pretitle">
+                Analisis
+            </div>
+
+            <h2 class="page-title">
+                Hasil Survei
+            </h2>
+
+            <div class="text-secondary mt-1">
+                Analisis berdasarkan jawaban ranking 1
+                pada setiap bagian survei.
             </div>
         </div>
+
+        {{-- TOMBOL CETAK LAPORAN --}}
+        <div class="col-auto ms-auto">
+            <div class="btn-list">
+
+                <button
+                    type="button"
+                    id="btnPrintPdf"
+                    class="btn btn-success"
+                >
+                    <i class="ti ti-file-type-pdf me-1"></i>
+                    Cetak Laporan Lengkap
+                </button>
+
+            </div>
+        </div>
+
     </div>
+</div>
+
 
     <div class="card mb-4">
         <div class="card-body">

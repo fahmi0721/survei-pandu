@@ -25,6 +25,115 @@ class SurveyResultService
             );
     }
 
+    
+    public function respondentDetails(
+        Survey $survey,
+        ?string $status = null,
+        ?int $workAreaId = null
+    ): array {
+
+        $respondents = DB::table('survey_responses as r')
+            ->leftJoin(
+                'work_areas as w',
+                'w.id',
+                '=',
+                'r.work_area_id'
+            )
+            ->where('r.survey_id', $survey->id)
+            ->when(
+                $status !== null,
+                fn ($q) => $q->where('r.status', $status)
+            )
+            ->when(
+                $workAreaId !== null,
+                fn ($q) => $q->where('r.work_area_id', $workAreaId)
+            )
+            ->select([
+                'r.id',
+                'r.status',
+                'r.kelas_pandu',
+                'r.submitted_at',
+                'w.nama as wilayah',
+            ])
+            ->orderBy('r.id')
+            ->get();
+
+        $answers = DB::table('survey_answers as a')
+            ->join(
+                'survey_responses as r',
+                'r.id',
+                '=',
+                'a.survey_response_id'
+            )
+            ->join(
+                'survey_sections as s',
+                's.id',
+                '=',
+                'a.survey_section_id'
+            )
+            ->join(
+                'survey_questions as q',
+                'q.id',
+                '=',
+                'a.survey_question_id'
+            )
+            ->where('r.survey_id', $survey->id)
+            ->when(
+                $status !== null,
+                fn ($query) => $query->where('r.status', $status)
+            )
+            ->when(
+                $workAreaId !== null,
+                fn ($query) => $query->where('r.work_area_id', $workAreaId)
+            )
+            ->select([
+                'a.survey_response_id',
+                'a.ranking',
+                's.id as section_id',
+                's.title as section_title',
+                's.sort_order as section_order',
+                'q.question_text',
+                 'q.description',
+            ])
+            ->orderBy('a.survey_response_id')
+            ->orderBy('s.sort_order')
+            ->orderBy('s.id')
+            ->orderBy('a.ranking')
+            ->get()
+            ->groupBy('survey_response_id');
+
+        return $respondents->map(function ($respondent) use ($answers) {
+
+            $sections = collect($answers->get($respondent->id, []))
+                ->groupBy('section_id')
+                ->map(function ($items) {
+                    $first = $items->first();
+
+                    return [
+                        'section_title' => $first->section_title,
+                        'answers' => $items->map(fn ($item) => [
+                            'ranking' => (int) $item->ranking,
+                            'question_text' => $item->question_text,
+                            'description' => $item->description,
+                        ])->values()->all(),
+                    ];
+                })
+                ->values()
+                ->all();
+
+            return [
+                'response_id' => $respondent->id,
+                'status' => $respondent->status,
+                'wilayah' => $respondent->wilayah ?? '—',
+                'kelas_pandu' => $respondent->kelas_pandu ?? '—',
+                'submitted_at' => $respondent->submitted_at,
+                'sections' => $sections,
+            ];
+
+        })->all();
+    }
+
+
     public function perRespondent(
         Survey $survey,
         ?string $status = null,
@@ -225,6 +334,7 @@ class SurveyResultService
                     return [
                         'question_id' => $question->id,
                         'question_text' => $question->question_text,
+                        'description' => $question->description,
                         'total_rank_1' => $count,
                         'percentage' => $respondents > 0
                             ? round($count / $respondents * 100, 2)

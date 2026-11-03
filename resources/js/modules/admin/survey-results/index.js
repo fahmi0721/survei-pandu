@@ -166,8 +166,58 @@ export function initSurveyResults() {
         }
     }
 
+    
+    // ==========================================
+    // EVENT FILTER HASIL SURVEI
+    // ==========================================
     $('#resultSurvey, #resultStatus, #resultWorkArea')
         .on('change', loadResults);
 
+
+    // ==========================================
+    // CETAK LAPORAN HASIL SURVEI PDF
+    // ==========================================
+    $('#btnPrintPdf').on('click', function () {
+
+        const surveyId = $('#resultSurvey').val();
+        const status = $('#resultStatus').val();
+        const workAreaId = workArea.val();
+
+        if (!surveyId) {
+            alert('Silakan pilih survei terlebih dahulu.');
+            return;
+        }
+
+        // Ambil URL dari Blade
+        const printUrl = module.attr('data-print-url');
+
+        if (!printUrl) {
+            console.error('URL cetak PDF belum dikonfigurasi.');
+            return;
+        }
+
+        // Buat URL dengan parameter filter
+        const url = new URL(printUrl, window.location.origin);
+
+        url.searchParams.set('survey_id', surveyId);
+
+        if (status) {
+            url.searchParams.set('status', status);
+        }
+
+        if (workAreaId) {
+            url.searchParams.set('work_area_id', workAreaId);
+        }
+
+        // Buka PDF pada tab baru
+        window.open(url.toString(), '_blank');
+
+    });
+
+
+    // ==========================================
+    // LOAD DATA PERTAMA KALI
+    // ==========================================
     loadResults();
+
 }
