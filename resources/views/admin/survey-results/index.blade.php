@@ -6,8 +6,11 @@
 @section('content')
 
 <div id="surveyResultModule"
-     data-url="{{ route('admin.survey-results.data') }}"
-    data-print-url="{{ route('admin.survey-results.print') }}">
+    data-url="{{ route('admin.survey-results.data') }}"
+    data-print-url="{{ route('admin.survey-results.print') }}"
+    data-report-store-url="{{ route('admin.survey-reports.store') }}"
+    data-report-status-url="{{ route('admin.survey-reports.status', ['report' => '__ID__']) }}"
+>
     
 <div class="page-header mb-4">
     <div class="row align-items-center">
@@ -86,6 +89,46 @@
             </div>
         </div>
     </div>
+    
+    <div class="card mb-4" id="reportProgressCard" style="display:none;">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h3 class="card-title mb-0">
+                    Proses Pembuatan Laporan
+                </h3>
+
+                <span class="badge bg-blue-lt" id="reportStatus">
+                    Menunggu
+                </span>
+            </div>
+
+            <div class="progress mb-2">
+                <div
+                    id="reportProgressBar"
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width:0%"
+                ></div>
+            </div>
+
+            <div class="text-secondary small mb-3" id="reportProgressText">
+                Menyiapkan laporan...
+            </div>
+
+            <a
+                id="reportDownloadBtn"
+                href="#"
+                class="btn btn-success"
+                style="display:none;"
+            >
+                <i class="ti ti-download me-2"></i>
+                Unduh Laporan Lengkap
+            </a>
+
+        </div>
+    </div>
+
 
     <!-- <div class="row row-cards mb-4">
         <div class="col-md-6">

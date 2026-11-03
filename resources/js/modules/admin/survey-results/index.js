@@ -174,45 +174,150 @@ export function initSurveyResults() {
         .on('change', loadResults);
 
 
-    // ==========================================
-    // CETAK LAPORAN HASIL SURVEI PDF
-    // ==========================================
-    $('#btnPrintPdf').on('click', function () {
+    
+    let reportPolling = null;
 
+    function getReportStatusUrl(reportId) {
+        return module.attr('data-report-status-url')
+            .replace('__ID__', encodeURIComponent(reportId));
+    }
+
+    function stopReportPolling() {
+        if (reportPolling !== null) {
+            clearInterval(reportPolling);
+            reportPolling = null;
+        }
+    }
+
+    async function checkReportStatus(reportId) {
+        try {
+            const data = await $.getJSON(getReportStatusUrl(reportId));
+
+            $('#reportProgressBar').css(
+                'width',
+                `${data.progress}%`
+            );
+
+            $('#reportProgressText').text(
+                `Batch ${data.completed_batches} dari ${data.total_batches} selesai (${data.progress}%).`
+            );
+
+            if (data.status === 'merging') {
+                $('#reportStatus').text('Menggabungkan PDF');
+                $('#reportProgressText').text(
+                    'Seluruh batch selesai. Menggabungkan laporan...'
+                );
+            }
+
+            if (data.status === 'completed') {
+                stopReportPolling();
+
+                $('#reportStatus')
+                    .text('Selesai')
+                    .removeClass('bg-blue-lt')
+                    .addClass('bg-green-lt');
+
+                $('#reportProgressBar').css('width', '100%');
+
+                $('#reportProgressText').text(
+                    'Laporan lengkap berhasil dibuat.'
+                );
+
+                $('#reportDownloadBtn')
+                    .attr('href', data.download_url)
+                    .show();
+
+                $('#btnPrintPdf').prop('disabled', false);
+            }
+
+            if (data.status === 'failed') {
+                stopReportPolling();
+
+                $('#reportStatus')
+                    .text('Gagal')
+                    .removeClass('bg-blue-lt')
+                    .addClass('bg-red-lt');
+
+                $('#reportProgressText').text(
+                    data.message || 'Pembuatan laporan gagal.'
+                );
+
+                $('#btnPrintPdf').prop('disabled', false);
+            }
+
+        } catch (error) {
+            console.error('Gagal memeriksa status laporan:', error);
+            stopReportPolling();
+            $('#reportProgressText').text(
+                'Koneksi status terputus. Muat ulang halaman untuk memeriksa laporan.'
+            );
+            $('#btnPrintPdf').prop('disabled', false);
+        }
+    }
+
+    $('#btnPrintPdf').on('click', async function () {
         const surveyId = $('#resultSurvey').val();
-        const status = $('#resultStatus').val();
-        const workAreaId = workArea.val();
 
         if (!surveyId) {
-            alert('Silakan pilih survei terlebih dahulu.');
+            alert('Pilih survei terlebih dahulu.');
             return;
         }
 
-        // Ambil URL dari Blade
-        const printUrl = module.attr('data-print-url');
+        stopReportPolling();
 
-        if (!printUrl) {
-            console.error('URL cetak PDF belum dikonfigurasi.');
-            return;
+        const button = $(this);
+        button.prop('disabled', true);
+
+        try {
+            const result = await $.ajax({
+                url: module.attr('data-report-store-url'),
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    survey_id: surveyId,
+                    status: $('#resultStatus').val(),
+                    work_area_id: $('#resultWorkArea').val(),
+                },
+            });
+
+            const reportId = result.report_id;
+
+            $('#reportProgressCard').show();
+
+            $('#reportStatus')
+                .text('Dalam antrean')
+                .removeClass('bg-green-lt bg-red-lt')
+                .addClass('bg-blue-lt');
+
+            $('#reportProgressBar').css('width', '0%');
+            $('#reportDownloadBtn').hide();
+
+            $('#reportProgressText').text(
+                'Laporan masuk antrean.'
+            );
+
+            await checkReportStatus(reportId);
+
+            if (reportPolling === null && button.prop('disabled')) {
+                reportPolling = setInterval(() => {
+                    checkReportStatus(reportId);
+                }, 5000);
+            }
+
+        } catch (error) {
+            console.error(error);
+
+            alert(
+                error.responseJSON?.message ||
+                'Gagal membuat permintaan laporan.'
+            );
+
+            button.prop('disabled', false);
         }
-
-        // Buat URL dengan parameter filter
-        const url = new URL(printUrl, window.location.origin);
-
-        url.searchParams.set('survey_id', surveyId);
-
-        if (status) {
-            url.searchParams.set('status', status);
-        }
-
-        if (workAreaId) {
-            url.searchParams.set('work_area_id', workAreaId);
-        }
-
-        // Buka PDF pada tab baru
-        window.open(url.toString(), '_blank');
-
     });
+
 
 
     // ==========================================

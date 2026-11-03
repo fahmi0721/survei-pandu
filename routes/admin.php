@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\WorkAreaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\SurveyReportController;
 
 // Dashboard — Admin dan HRD
 Route::get('/dashboard', [
@@ -47,6 +48,17 @@ Route::middleware('can:view-survey-results')
         Route::get('/survey-results/print',[SurveyResultController::class, 'print'])->name('print');
     });
 
+    Route::prefix('survey-reports')
+    ->name('survey-reports.')
+    ->group(function () {
+        Route::post('/', [SurveyReportController::class, 'store'])
+            ->name('store');
+        Route::get('/{report}/status', [SurveyReportController::class, 'status'])
+            ->name('status');
+        Route::get('/{report}/download', [SurveyReportController::class, 'download'])
+            ->name('download');
+    });
+
 // KHUSUS ADMIN — pertahankan seluruh route master
 Route::middleware('can:manage-surveys')
     ->group(function () {
@@ -66,6 +78,7 @@ Route::middleware('can:manage-surveys')
             Route::delete('/{survey}', [SurveyController::class, 'destroy'])
                 ->name('destroy');
         });
+
 
         Route::prefix('surveys/{survey}/sections')
         ->name('surveys.sections.')
@@ -118,7 +131,10 @@ Route::middleware('can:manage-surveys')
             Route::delete('/{question}', [SurveyQuestionController::class, 'destroy'])
                 ->name('destroy');
         });
+
+        
     });
+
 
 Route::middleware('can:manage-work-areas')
     ->group(function () {
