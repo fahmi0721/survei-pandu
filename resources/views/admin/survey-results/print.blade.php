@@ -167,7 +167,7 @@
 </head>
 
 <body>
-
+@if($page === 1)
 <div class="footer">
     PT INTAN SEJAHTERA UTAMA
     | Laporan Hasil Survei Perwira Pandu
@@ -325,7 +325,7 @@
     </div>
 
 @endforeach
-
+@endif
 {{-- LAMPIRAN --}}
 
 <div class="page-break"></div>
@@ -346,7 +346,7 @@
     <div class="respondent">
 
         <h2>
-            RESPONDEN {{ $number + 1 }}
+            RESPONDEN {{ (($page - 1) * $perPage) + $number + 1 }}
         </h2>
 
         <table class="info">
