@@ -10,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class SurveyResultController extends Controller
 {
@@ -19,6 +21,72 @@ class SurveyResultController extends Controller
             'surveys' => Survey::orderBy('title')->get(['id', 'title']),
             'workAreas' => WorkArea::orderBy('nama')->get(['id', 'nama']),
         ]);
+    }
+    
+    public function print(
+        Request $request,
+        SurveyResultService $service
+    ) {
+        $filters = $request->validate([
+            'survey_id' => [
+                'required',
+                'integer',
+                Rule::exists('surveys', 'id'),
+            ],
+            'status' => [
+                'nullable',
+                Rule::in(['aktif', 'tidak_aktif']),
+            ],
+            'work_area_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('work_areas', 'id'),
+            ],
+        ]);
+
+        $survey = Survey::findOrFail($filters['survey_id']);
+
+        $status = $filters['status'] ?? null;
+
+        $workAreaId = isset($filters['work_area_id'])
+            ? (int) $filters['work_area_id']
+            : null;
+
+        $workArea = $workAreaId
+            ? WorkArea::find($workAreaId)
+            : null;
+
+        $summary = $service->summary(
+            $survey,
+            $status,
+            $workAreaId
+        );
+
+        $respondents = $service->respondentDetails(
+            $survey,
+            $status,
+            $workAreaId
+        );
+
+        $pdf = Pdf::loadView(
+            'admin.survey-results.print',
+            [
+                'survey' => $survey,
+                'summary' => $summary,
+                'respondents' => $respondents,
+                'statusFilter' => $status,
+                'workArea' => $workArea,
+                'printedAt' => now(),
+            ]
+        )->setPaper('a4', 'portrait');
+
+        $filename = 'Laporan-Survei-'
+            . Str::slug($survey->title)
+            . '-'
+            . now()->format('Ymd-His')
+            . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     public function data(
