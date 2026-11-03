@@ -122,6 +122,47 @@
             font-size: 8px;
             color: #777;
         }
+
+        
+        .header {
+            border-bottom: 2px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .header-table td {
+            border: none;
+            padding: 0;
+            vertical-align: middle;
+            background: transparent;
+        }
+
+        .header-company {
+            text-align: left;
+        }
+
+        .header-company strong {
+            font-size: 15px;
+        }
+
+        .header-logo {
+            width: 200px;
+            text-align: right;
+        }
+
+        .header-logo img {
+            width: 180px;
+            height: auto;
+            max-height: 65px;
+        }
+
     </style>
 </head>
 
@@ -147,7 +188,6 @@
                 <img
                     src="{{ public_path('images/new_logo.png') }}"
                     alt="Logo ISMA"
-                    width="200px"
                 >
             </td>
         </tr>
