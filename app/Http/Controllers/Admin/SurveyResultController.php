@@ -42,7 +42,10 @@ class SurveyResultController extends Controller
                 'integer',
                 Rule::exists('work_areas', 'id'),
             ],
+            'page' => ['nullable', 'integer', 'min:1'],
         ]);
+        $page = (int) ($filters['page'] ?? 1);
+        $perPage = 10;
 
         $survey = Survey::findOrFail($filters['survey_id']);
 
@@ -59,7 +62,9 @@ class SurveyResultController extends Controller
         $summary = $service->summary(
             $survey,
             $status,
-            $workAreaId
+            $workAreaId,
+            $page,
+            $perPage
         );
 
         $respondents = $service->respondentDetails(
@@ -68,6 +73,11 @@ class SurveyResultController extends Controller
             $workAreaId
         );
 
+        $totalPages = max(
+            1,
+            (int) ceil($summary['total_respondents'] / $perPage)
+        );
+        abort_if($page > $totalPages, 404);
         $pdf = Pdf::loadView(
             'admin.survey-results.print',
             [
@@ -77,13 +87,16 @@ class SurveyResultController extends Controller
                 'statusFilter' => $status,
                 'workArea' => $workArea,
                 'printedAt' => now(),
+                'page' => $page,
+                'perPage' => $perPage,
+                'totalPages' => $totalPages,
             ]
         )->setPaper('a4', 'portrait');
 
         $filename = 'Laporan-Survei-'
             . Str::slug($survey->title)
-            . '-'
-            . now()->format('Ymd-His')
+            . '-Bagian-'
+            . $page
             . '.pdf';
 
         return $pdf->download($filename);

@@ -29,7 +29,9 @@ class SurveyResultService
     public function respondentDetails(
         Survey $survey,
         ?string $status = null,
-        ?int $workAreaId = null
+        ?int $workAreaId = null,
+        int $page = 1,
+        int $perPage = 10
     ): array {
 
         $respondents = DB::table('survey_responses as r')
@@ -56,7 +58,9 @@ class SurveyResultService
                 'w.nama as wilayah',
             ])
             ->orderBy('r.id')
+            ->forPage($page, $perPage)
             ->get();
+        $responseIds = $respondents->pluck('id')->all();
 
         $answers = DB::table('survey_answers as a')
             ->join(
@@ -78,6 +82,7 @@ class SurveyResultService
                 'a.survey_question_id'
             )
             ->where('r.survey_id', $survey->id)
+            
             ->when(
                 $status !== null,
                 fn ($query) => $query->where('r.status', $status)
@@ -86,6 +91,7 @@ class SurveyResultService
                 $workAreaId !== null,
                 fn ($query) => $query->where('r.work_area_id', $workAreaId)
             )
+            ->whereIn('a.survey_response_id', $responseIds)
             ->select([
                 'a.survey_response_id',
                 'a.ranking',
